@@ -6,21 +6,18 @@ import PetBrowser from './PetBrowser'
 // const endpoint = '/api/pets';
 
 class App extends React.Component {
-  constructor() {
-    super()
-
-    this.state = {
+  state = {
       pets: [],
       filters: {
         type: 'all'
       }
-    }
   }
 
-  handleChangeType = e => {
-    // console.log('handleChangeType fires') //recognize dropdown menu change
-    // console.log(e.target.value)
-    // console.log(this.state.filters) //previous value
+
+  onChangeType = e => {
+    console.log('onChangeType fires') //recognize dropdown menu change
+    console.log(e.target.value)
+    console.log(this.state.filters) //previous value
     this.setState({
       filters: {...this.state.filters, type: e.target.value}
     });
@@ -39,12 +36,12 @@ class App extends React.Component {
       .catch(err=>console.log(err))
   }
 
-  onAdoptPet = () => {
+  onAdoptPet = (petId) => {
     console.log(petId);
-    const newPets = this.state.pets.map(pet => {
+    const pets = this.state.pets.map(pet => {
       if(pet.id === petId) {
         return (pet.isAdopted = true);
-      } return pet 
+      } return pet
     })
   }
 
@@ -57,10 +54,12 @@ class App extends React.Component {
         <div className="ui container">
           <div className="ui grid">
             <div className="four wide column">
-              <Filters handleChangeType={this.handleChangeType} />
+              <Filters onChangeType={this.onChangeType} 
+                        onFindPetsClick={this.onFindPetsClick}/>
             </div>
             <div className="twelve wide column">
-              <PetBrowser />
+              <PetBrowser onAdoptPet={this.onAdoptPet}
+                          pets={this.state.pets}/>
             </div>
           </div>
         </div>
